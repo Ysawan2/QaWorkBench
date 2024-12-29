@@ -14,6 +14,10 @@ AZURE_INSTALL_CMD_MAC='brew install azure-cli'
 GCLOUD_INSTALL_CMD_MAC='./google-cloud-sdk/install.sh'
 
 # color codes
+# RED="\e[31m"
+# GREEN="\e[32m"
+# RESET="\e[0m"
+
 RED="\e[31m"
 GREEN="\e[32m"
 YELLOW="\e[33m"
@@ -33,6 +37,7 @@ install_dependencies(){
     eval ${!INSTALL_CMD}
 
     if [[ $? -ne 0 && -f "kubectl" ]]; then
+
         echo -e "${RED} Failed to install kubectl, cannot proceed further..${RESET}"
         #exit 1
     fi
@@ -44,6 +49,7 @@ install_dependencies(){
 
 deploy_cluster(){
     # install k3d
+
     INSTALL_CMD="$K3D_INSTALL_CMD_$OS_TYPE"
     eval ${!INSTALL_CMD}
 
