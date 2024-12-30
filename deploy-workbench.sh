@@ -5,6 +5,11 @@ K3D_INSTALL_CMD_LINUX='curl -s https://raw.githubusercontent.com/k3d-io/k3d/main
 KUBECTL_INSTALL_CMD_LINUX='curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"'
 AWS_INSTALL_CMD_LINUX='curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"; sudo installer -pkg AWSCLIV2.pkg -target /'
 AZURE_INSTALL_CMD_LINUX='brew install azure-cli'
+GCLOUD_INSTALL_CMD_MAC='./google-cloud-sdk/install.sh'
+KUBECTX_INSTALL_CMD_MAC='sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens'
+
 
 # MAC installers
 K3D_INSTALL_CMD_MAC='curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash'
@@ -12,6 +17,9 @@ KUBECTL_INSTALL_CMD_MAC='curl -LO "https://dl.k8s.io/release/$(curl -L -s https:
 AWS_INSTALL_CMD_MAC='curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"; sudo installer -pkg AWSCLIV2.pkg -target /'
 AZURE_INSTALL_CMD_MAC='brew install azure-cli'
 GCLOUD_INSTALL_CMD_MAC='./google-cloud-sdk/install.sh'
+KUBECTX_INSTALL_CMD_MAC='sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens'
 
 # color codes
 # RED="\e[31m"
@@ -34,6 +42,7 @@ fi
 install_dependencies(){
     # install kubectl
     INSTALL_CMD="$KUBECTL_INSTALL_CMD_$OS_TYPE"
+    echo -e "${YELLOW} Installing kubectl latest version ...${RESET}"
     eval ${!INSTALL_CMD}
 
     if [[ $? -ne 0 && -f "kubectl" ]]; then
@@ -45,6 +54,18 @@ install_dependencies(){
     sudo mv kubectl /usr/local/bin/kubectl
     kubectl version --client
     echo -e "${GREEN}Kubectl installed successfully...${RESET}"
+
+    # kubectx
+    echo -e "${YELLOW} Installing kubectx/kubens latest version ...${RESET}"
+    eval "$KUBECTX_INSTALL_CMD_MAC"
+
+    if [ ! -f "kubectx" ]; then
+        echo -e "${RED} Failed to install kubectx/kubens ...${RESET}"
+    else
+        echo -e "${GREEN} Kubectx/kubens installed successfully..${RESET}"
+
+    fi
+
 }
 
 deploy_cluster(){
