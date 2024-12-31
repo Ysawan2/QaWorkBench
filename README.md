@@ -14,6 +14,11 @@ QaWorkBench provides a containerized test environment with following capabilitie
 - deploy local cluster - k3d
 - fetch secrets from hashicorp vault
 - configure cloud clis
+   - configure aws cli
+   - configure azure cli
+   - configure gcloud
+   - install kubectx
+   - install kubens
 - install qa dependencies
 - run qa tests
 - gather logs and store in local volume
